@@ -1,124 +1,43 @@
-# Blink LED
+# Blink LED con interrupción de botón y polling
 
-This project bases on the [MatrixMCU toolkit](https://github.com/sdg2DieUpm/MatrixMCU).
+Este proyecto hace parpadear el LED LD2 de la Nucleo-STM32F446RE a una frecuencia de `c` Hz. La frecuencia es controlada por el pulsado del botón de usuario B1. Cada vez que se pulsa el botón, la frecuencia (`c`) aumenta en 1. El LED está apagado cuando `c` es igual a 0. El botón es manejado por una rutina de servicio de interrupción (ISR) mientras que el retardo es manejado por *polling*.
 
-This README serves as a template for the documentation of your project. You can use it as a guide to write your own documentation. At the end of the document you will find some information on the `project_template` repository.
+## Autor
 
-Watch this video to better understand how to document your code with **Doxygen**:
+* **Josué Pagán Ortiz** - email: [j.pagan@upm.es](mailto:j.pagan@upm.es)
 
-[![Link to Doxygen tutorial](docs/assets/imgs/doxygen_thumb.png)](https://youtu.be/VC7fExJJQSY?si=oIAZU_b2sRWhu3de "[MatrixMCU]. Documentación de código con Doxygen.")
+## Ejercicio: parpadeo con interrupción de un botón
 
-## Authors
+**Cree el proyecto** `blink_led_button_interr`. **Se trata de una modificación del programa** [blink_led_button](https://ieindieupm.github.io/blink_led_button) **donde la acción de parpadeo no se toma al leer mediante polling el valor de la GPIO del botón, sino mediante su ISR.**
 
-* **Author 1** - email: [author@author.es](mailto:author@author.es)
-* **Author 2** - email: [author@author.es](mailto:author@author.es)
+![](docs/assets/imgs/ejercicio.png)
 
-Write a brief descrition of your project **here**.
+1 . **Modifique la definición del modo de la GPIO del botón**. Ahora, además de entrada, se debe configurar la línea como fuente de interrupción externa que genere una interrupción en el flanco de subida y de bajada.
 
-You can add a frontpage image **(ensure you are the owner)** here. e.g.: a picture of the HW setup, an oscilloscope capture, etc.
+* En la función `port_button_gpio_setup()` cambie el modo de la GPIO del botón a `GPIO_MODE_IT_RISING_FALLING`.
 
-**Images must be located in folder `docs/assets/imgs/` and can be included in the document awith the following Markdown format:**
+  Esta etiqueta se extiende a `(MODE_INPUT | EXTI_IT | TRIGGER_RISING | TRIGGER_FALLING)`; como ve, se configura como entrada, fuente de interrupción externa y que genere interrupción en flanco de subida y de bajada.
 
-```markdown
-![Alternative text](docs/assets/imgs/image.png)
-```
+2 . **Cree la función** `port_button_exti_config()` **para configurar la interrupción:**
 
-It looks like this:
-![Alternative text](docs/assets/imgs/image.png)
+* Primero: habilite el reloj del módulo generador de interrupciones: `__HAL_RCC_SYSCFG_CLK_ENABLE();`
+* Llame a `HAL_NVIC_SetPriority()` para poner la interrupción con prioridad ‘1’ y subprioridad ‘0’. Las prioridades están definidas en `stm32f4_button.h`.
+* Llame a `HAL_NVIC_EnableIRQ()` para habilitar la interrupción.
+  * **La ISR de la línea donde se conecta el botón es** `EXTI15_10_IRQn`. Esta línea se ha definido en el archivo `stm32f4_button.h` como `#define BUTTON_EXTI_IRQn EXTI15_10_IRQn`.
 
-**Add a public link to video of your property with a demo and explanation of your project.**
+![](docs/assets/imgs/nvic.png)
 
-To add a link to a Youtube video you can use the following Markdown format:
+3 . **Deberá hacer públicas las funciones o macros necesarias**
 
-```markdown
-[![Alternative text](docs/assets/imgs/image2.png)](https://youtu.be/VEDEO_ID "Hover text.")
-```
+4 . **En** `main.c`:
 
-It looks like this:
+* **Crear un *flag* global y volátil** (`volatile`) para indicar que se ha ha pulsado (y soltado) el botón
+  * El *flag* lo activa la ISR y lo desactiva la función `main()`
+* **Hacer el contador** `c` **global y volátil** → lo aumenta la ISR
 
-[![Link to Blink tutorial](docs/assets/imgs/image2.png)](https://www.youtube.com/watch?v=CcbgLVfCXrw& "Youtube video.")
+5 . **En la ISR** en `interr.c`:
 
-## Version 1
-
-Brief description of version 1.
-
-* To make a text bold, use the `**` symbol consecutively. For example: **Bold text**
-* To make a text italic, use the `*` symbol consecutively. For example: *Italic text*
-* To make a text both italic and bold, use the `***` symbol consecutively. For example: ***Italic and bold text***
-
-To add subsections, use the `#` symbol consecutively. For example:
-
-### Subsection 1
-
-Brief description of subsection 1.
-
-To add a list of items, use the `*` symbol consecutively. For example:
-
-* Item 1
-* Item 2
-* Item 3
-
-To add a list of numbered items, use the `1.` symbol consecutively. For example:
-
-1. Item 1
-2. Item 2
-3. Item 3
-
-To add a link to a webpage, use the following code:
-
-```markdown
-Link to [Google](https://www.google.com).
-```
-
-It looks like this: Link to [Google](https://www.google.com).
-
-You can add tables in the following way:
-
-| Column 1 | Column 2 | Column 3 |
-| -------- | -------- | -------- |
-| Value 1  | Value 2  | Value 3  |
-| Value 4  | Value 5  | Value 6  |
-
-To add a link to a `.c` or `.h` file, you can use the following code. You can add links to codes like this, with the simple use of the backtick symbol `:
-
-```markdown
-Link to the `interr.c`.
-```
-
-It looks like this: Link to the `interr.c`.
-
-You can also change the name of the link, or point to another `.html` file. These are links to `.html` files that are automatically generated with the code documentation when running Doxygen and are located in the `docs/html/` folder.
-
-```markdown
-Link to the [FSM of Version 1](fsm__button_8c.html).
-```
-
-It looks like this: Link to the [File with ISRs](interr_8c.html).
-
-## Version 2
-
-Brief description of version 2.
-
-## Version N
-
-Brief description of version N.
-
-## Information on project_template
-
-Template repository for C projects
-
-## File Organization
-
-The application file organization is as follows:
-
-| Main Folder Structure | Description                                                                                                   |
-| --------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `.github/`            | Configuration files for GitHub actions on `devel` and `main` branches (to do).                                |
-| `.vscode/`            | Configuration files for the Visual Studio Code IDE.                                                           |
-| `bin/`                | Executables for the application and the tests.                                                                |
-| `build/`              | CMake and make build files.                                                                                   |
-| `common/`             | C source and header files of your project. These files must be platform-agnostic.                             |
-| `port/`               | C source and header files of your project. These files are platform-specific.                                 |
-| `main.c`              | The main routine of your project. It must contain a C `main` function from which your program starts running. |
-| `test/`               | Test sources and required data for testing.                                                                   |
-| `CMakeLists.txt`      | CMake lists file. It specifies how to create the `Makefile` of the application using the `cmake` tool.        |
+* Declarar como `extern` el *flag* y `c` (están en `main.c`)
+* Implementar la ISR `EXTI15_10_IRQHandler()` que:
+  * Use una variable local `static` para saber que hay un flanco de subida antes que uno de bajada
+  * Gestionar el *flag* y el contador `c` adecuadamente
