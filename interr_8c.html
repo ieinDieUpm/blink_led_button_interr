@@ -95,9 +95,7 @@ $(document).ready(function(){initNavTree('interr_8c.html',''); initResizable(); 
 <div class="textblock"><code>#include &quot;<a class="el" href="port__system_8h_source.html">port_system.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="port__button_8h_source.html">port_button.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="stm32f4__button_8h_source.html">stm32f4_button.h</a>&quot;</code><br />
-</div>
-<p><a href="interr_8c_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab5e09814056d617c521549e542639b7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interr_8c.html#ab5e09814056d617c521549e542639b7e">SysTick_Handler</a> (void)</td></tr>
@@ -121,8 +119,6 @@ Variables</h2></td></tr>
 <div class="textblock"><p>Interrupt service routines for the STM32F4 platform. </p>
 <dl class="section author"><dt>Author</dt><dd>Josué Pagán (<a href="#" onclick="location.href='mai'+'lto:'+'j.p'+'ag'+'an@'+'up'+'m.e'+'s'; return false;">j.pag<span style="display: none;">.nosp@m.</span>an@u<span style="display: none;">.nosp@m.</span>pm.es</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025-03-01 </dd></dl>
-
-<p class="definition">Definition in file <a class="el" href="interr_8c_source.html">interr.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a738473a5b43f6c92b80ce1d3d6f77ed9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a738473a5b43f6c92b80ce1d3d6f77ed9">&#9670;&nbsp;</a></span>EXTI15_10_IRQHandler()</h2>
@@ -142,8 +138,6 @@ Variables</h2></td></tr>
 
 <p>This function handles Px10-Px15 global interrupts. </p>
 <p>First, this function identifies the line/ pin which has raised the interruption. Then, it calls the HAL_xxx_IRQHandler() function to handle the interruption and clear the pending bit. </p>
-
-<p class="definition">Definition at line <a class="el" href="interr_8c_source.html#l00042">42</a> of file <a class="el" href="interr_8c_source.html">interr.c</a>.</p>
 
 </div>
 </div>
@@ -165,8 +159,6 @@ Variables</h2></td></tr>
 
 <p>This function handles the EXTI line detection. </p>
 <p>This function is called when the EXTI line is detected. It checks the status of the button and increments the counter if the button is pressed. </p>
-
-<p class="definition">Definition at line <a class="el" href="interr_8c_source.html#l00056">56</a> of file <a class="el" href="interr_8c_source.html">interr.c</a>.</p>
 
 </div>
 </div>
@@ -190,8 +182,6 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This ISR is called when the SysTick timer generates an interrupt. The program flow jumps to this ISR and increments the tick counter by one millisecond.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd><b>The variable <code>msTicks</code> must be declared volatile!</b> Just because it is modified by a call of an ISR, in order to avoid <a href="https://en.wikipedia.org/wiki/Race_condition"><em>race conditions</em></a> . <b>Added to the definition</b> after <em>static</em>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="interr_8c_source.html#l00031">31</a> of file <a class="el" href="interr_8c_source.html">interr.c</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -208,8 +198,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Flag to indicate if the button is pressed </p>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00016">16</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
 </div>
 </div>
 <a id="abef96d989799a17bf7f236796bb23e2b"></a>
@@ -224,8 +212,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Counter for the button press </p>
-
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00017">17</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
