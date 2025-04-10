@@ -39,5 +39,7 @@ Este proyecto hace parpadear el LED LD2 de la Nucleo-STM32F446RE a una frecuenci
 
 * Declarar como `extern` el *flag* y `c` (están en `main.c`)
 * Implementar la ISR `EXTI15_10_IRQHandler()` que:
-  * Use una variable local `static` para saber que hay un flanco de subida antes que uno de bajada
-  * Gestionar el *flag* y el contador `c` adecuadamente
+  * Haga un GET del bit `STM32F4_BUTTON_GPIO_PIN` para comprobar si ha sido un flanco de subida o de bajada del botón quién ha interrumpido
+  * Si ha sido el botón, llamar a la función `HAL_GPIO_EXTI_IRQHandler()`. Ésta limpiará el *flag* de interrupción y llamará a la función de *callback* `HAL_GPIO_EXTI_Callback()`.
+  * En el *callback* use una variable local (o *flag*) `static` para llevar el control de si el flanco de una interrupción anterior fue de subida o de bajada.
+  * Si el pin recibido como argumento en el *callback* es el del botón (`STM32F4_BUTTON_GPIO_PIN`), entonces gestionar el *flag* y el contador `c` adecuadamente
