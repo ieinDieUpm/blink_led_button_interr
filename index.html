@@ -129,8 +129,10 @@ Ejercicio: parpadeo con interrupción de un botón</h1>
 <ul>
 <li>Declarar como <code>extern</code> el <em>flag</em> y <code>c</code> (están en <code>main.c</code>)</li>
 <li>Implementar la ISR <code><a class="el" href="interr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles Px10-Px15 global interrupts.">EXTI15_10_IRQHandler()</a></code> que:<ul>
-<li>Use una variable local <code>static</code> para saber que hay un flanco de subida antes que uno de bajada</li>
-<li>Gestionar el <em>flag</em> y el contador <code>c</code> adecuadamente </li>
+<li>Haga un GET del bit <code>STM32F4_BUTTON_GPIO_PIN</code> para comprobar si ha sido un flanco de subida o de bajada del botón quién ha interrumpido</li>
+<li>Si ha sido el botón, llamar a la función <code>HAL_GPIO_EXTI_IRQHandler()</code>. Ésta limpiará el <em>flag</em> de interrupción y llamará a la función de <em>callback</em> <code><a class="el" href="interr_8c.html#a0cd91fd3a9608559c2a87a8ba6cba55f" title="This function handles the EXTI line detection.">HAL_GPIO_EXTI_Callback()</a></code>.</li>
+<li>En el <em>callback</em> use una variable local (o <em>flag</em>) <code>static</code> para llevar el control de si el flanco de una interrupción anterior fue de subida o de bajada.</li>
+<li>Si el pin recibido como argumento en el <em>callback</em> es el del botón (<code>STM32F4_BUTTON_GPIO_PIN</code>), entonces gestionar el <em>flag</em> y el contador <code>c</code> adecuadamente </li>
 </ul>
 </li>
 </ul>
