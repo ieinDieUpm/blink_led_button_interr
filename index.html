@@ -117,22 +117,21 @@ Ejercicio: parpadeo con interrupción de un botón</h1>
 <img src="nvic.png" alt=""/>
 </div>
    <p>3 . <b>Deberá hacer públicas las funciones o macros necesarias</b></p>
-<p>4 . <b>En</b> <code>main.c</code>:</p>
+<p>4 . <b>En</b> <code><a class="el" href="main_8c.html" title="LD2 blinks with a frequency of c. Where c is the number of times the button has been pressed using in...">main.c</a></code>:</p>
 <ul>
 <li><b>Crear un <em>flag</em> global y volátil</b> (<code>volatile</code>) para indicar que se ha ha pulsado (y soltado) el botón<ul>
 <li>El <em>flag</em> lo activa la ISR y lo desactiva la función <code><a class="el" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="Main function.">main()</a></code></li>
 </ul>
 </li>
-<li><b>Hacer el contador</b> <code>c</code> <b>global y volátil</b> → lo aumenta la ISR</li>
 </ul>
-<p>5 . <b>En la ISR</b> en <code>interr.c</code>:</p>
+<p>5 . <b>En la ISR</b> en <code><a class="el" href="interr_8c.html" title="Interrupt service routines for the STM32F4 platform.">interr.c</a></code>:</p>
 <ul>
-<li>Declarar como <code>extern</code> el <em>flag</em> y <code>c</code> (están en <code>main.c</code>)</li>
+<li>Declarar como <code>extern</code> el <em>flag</em> (está en <code><a class="el" href="main_8c.html" title="LD2 blinks with a frequency of c. Where c is the number of times the button has been pressed using in...">main.c</a></code>)</li>
 <li>Implementar la ISR <code><a class="el" href="interr_8c.html#a738473a5b43f6c92b80ce1d3d6f77ed9" title="This function handles Px10-Px15 global interrupts.">EXTI15_10_IRQHandler()</a></code> que:<ul>
-<li>Haga un GET del bit <code>STM32F4_BUTTON_GPIO_PIN</code> para comprobar si ha sido un flanco de subida o de bajada del botón quién ha interrumpido</li>
+<li>Haga un GET del bit <code>STM32F4_BUTTON_GPIO_PIN</code> para comprobar si ha sido un flanco de subida o de bajada del botón quién ha interrumpido.</li>
 <li>Si ha sido el botón, llamar a la función <code>HAL_GPIO_EXTI_IRQHandler()</code>. Ésta limpiará el <em>flag</em> de interrupción y llamará a la función de <em>callback</em> <code><a class="el" href="interr_8c.html#a0cd91fd3a9608559c2a87a8ba6cba55f" title="This function handles the EXTI line detection.">HAL_GPIO_EXTI_Callback()</a></code>.</li>
 <li>En el <em>callback</em> use una variable local (o <em>flag</em>) <code>static</code> para llevar el control de si el flanco de una interrupción anterior fue de subida o de bajada.</li>
-<li>Si el pin recibido como argumento en el <em>callback</em> es el del botón (<code>STM32F4_BUTTON_GPIO_PIN</code>), entonces gestionar el <em>flag</em> y el contador <code>c</code> adecuadamente </li>
+<li>Si el pin recibido como argumento en el <em>callback</em> es el del botón (<code>STM32F4_BUTTON_GPIO_PIN</code>), entonces gestionar el <em>flag</em>. El contador <code>c</code> se gestiona en <code><a class="el" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title="Main function.">main()</a></code>. </li>
 </ul>
 </li>
 </ul>

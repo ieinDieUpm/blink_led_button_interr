@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['msticks_113',['msTicks',['../stm32f4__system_8c.html#a0a6e5e17fcb15f3922e278025acabfa2',1,'stm32f4_system.c']]]
+  ['systemcoreclock_112',['SystemCoreClock',['../stm32f4__system_8c.html#aa3cd3e43291e81e795d642b79b6088e6',1,'stm32f4_system.c']]]
 ];
